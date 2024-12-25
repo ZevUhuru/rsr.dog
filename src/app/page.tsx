@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Shield, LockKeyhole, Coins, Play, X } from 'lucide-react';
+import { Shield, LockKeyhole, Coins, Play } from 'lucide-react';
+import Image from 'next/image';
 
 // Types
 type Category = 'all' | 'superhero' | 'samurai' | 'cyberpunk' | 'noble' | 'professional';
@@ -49,7 +50,6 @@ const Logo: React.FC = () => (
 );
 
 const RSRDogWebsite: React.FC = () => {
-  const [selectedMedia, setSelectedMedia] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<Category>('all');
   const [scrollY, setScrollY] = useState<number>(0);
   const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
@@ -181,11 +181,15 @@ const RSRDogWebsite: React.FC = () => {
                 key={index}
                 className="relative group cursor-pointer overflow-hidden border-2 border-blue-300/20 aspect-square bg-blue-900/20"
               >
-                <img 
-                  src="/api/placeholder/400/400" 
-                  alt={`RSR Dog ${index + 1}`}
-                  className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity"
-                />
+                <div className="relative w-full h-full">
+                  <Image 
+                    src="/api/placeholder/400/400" 
+                    alt={`RSR Dog ${index + 1}`}
+                    className="object-cover opacity-75 group-hover:opacity-100 transition-opacity"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
                   <div className="font-mono text-white">
                     <h3 className="text-sm font-bold truncate">Guardian #{index + 1}</h3>
