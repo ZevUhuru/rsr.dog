@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, LockKeyhole, Coins, Play, X } from 'lucide-react';
 
+// Types
 type Category = 'all' | 'superhero' | 'samurai' | 'cyberpunk' | 'noble' | 'professional';
 
 interface Feature {
@@ -11,11 +12,33 @@ interface Feature {
   description: string;
 }
 
-// Color constants
+// Constants
 const COLORS = {
   reserveBlue: 'rgb(1, 81, 175)',
   darkReserveBlue: 'rgb(0, 61, 132)',
 } as const;
+
+const categories: readonly Category[] = [
+  'all', 'superhero', 'samurai', 'cyberpunk', 'noble', 'professional'
+] as const;
+
+const features: Feature[] = [
+  {
+    icon: <Shield className="w-12 h-12 text-yellow-400" />,
+    title: "Not Your Average Guard Dog",
+    description: "While others protect physical assets, RSR Dog stands watch over digital value."
+  },
+  {
+    icon: <LockKeyhole className="w-12 h-12 text-yellow-400" />,
+    title: "Always Alert",
+    description: "24/7 guardian of the Reserve Protocol. No breaks. No holidays. Just pure dedication."
+  },
+  {
+    icon: <Coins className="w-12 h-12 text-yellow-400" />,
+    title: "Breeds Different",
+    description: "Part watchdog, part protocol guardian, all business. This isn't your standard security detail."
+  }
+];
 
 const Logo: React.FC = () => (
   <div className="relative">
@@ -40,6 +63,11 @@ const RSRDogWebsite: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleVideoError = (e: React.SyntheticEvent<HTMLVideoElement, Event>): void => {
+    console.error('Error loading video:', e);
+    setIsVideoLoaded(false);
+  };
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: COLORS.reserveBlue }}>
       {/* Hero Section with Video Background */}
@@ -55,6 +83,7 @@ const RSRDogWebsite: React.FC = () => {
               isVideoLoaded ? 'opacity-40' : 'opacity-0'
             }`}
             onLoadedData={() => setIsVideoLoaded(true)}
+            onError={handleVideoError}
           >
             <source src="/your-video.mp4" type="video/mp4" />
           </video>
@@ -107,7 +136,10 @@ const RSRDogWebsite: React.FC = () => {
             <p className="text-xl font-mono text-blue-100 mb-8">
               The loyal protector of the Reserve Protocol ecosystem.
             </p>
-            <button className="bg-transparent border-2 border-yellow-400 text-yellow-400 px-8 py-3 rounded-none font-mono hover:bg-yellow-400 hover:text-blue-900 transition-colors flex items-center gap-2">
+            <button 
+              type="button"
+              className="bg-transparent border-2 border-yellow-400 text-yellow-400 px-8 py-3 rounded-none font-mono hover:bg-yellow-400 hover:text-blue-900 transition-colors flex items-center gap-2"
+            >
               <Play className="w-4 h-4" />
               Watch Story
             </button>
@@ -126,10 +158,11 @@ const RSRDogWebsite: React.FC = () => {
           
           {/* Category Filter */}
           <div className="flex justify-center gap-2 mb-12">
-            {['all', 'superhero', 'samurai', 'cyberpunk', 'noble', 'professional'].map(category => (
+            {categories.map(category => (
               <button
                 key={category}
-                onClick={() => setActiveCategory(category as Category)}
+                type="button"
+                onClick={() => setActiveCategory(category)}
                 className={`px-6 py-2 font-mono border-2 ${
                   activeCategory === category 
                     ? 'border-yellow-400 text-yellow-400' 
@@ -175,23 +208,7 @@ const RSRDogWebsite: React.FC = () => {
               RSR Dog guards something else entirely.
             </p>
             <div className="grid grid-cols-3 gap-8">
-              {[
-                {
-                  icon: <Shield className="w-12 h-12 text-yellow-400" />,
-                  title: "Not Your Average Guard Dog",
-                  description: "While others protect physical assets, RSR Dog stands watch over digital value."
-                },
-                {
-                  icon: <LockKeyhole className="w-12 h-12 text-yellow-400" />,
-                  title: "Always Alert",
-                  description: "24/7 guardian of the Reserve Protocol. No breaks. No holidays. Just pure dedication."
-                },
-                {
-                  icon: <Coins className="w-12 h-12 text-yellow-400" />,
-                  title: "Breeds Different",
-                  description: "Part watchdog, part protocol guardian, all business. This isn't your standard security detail."
-                }
-              ].map((feature: Feature, index: number) => (
+              {features.map((feature, index) => (
                 <div 
                   key={index} 
                   className="text-center border border-white border-opacity-20 p-6"
@@ -205,8 +222,6 @@ const RSRDogWebsite: React.FC = () => {
             </div>
           </div>
         </div>
-
-
       </section>
 
       {/* Footer */}
